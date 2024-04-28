@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option go_package = "github.com/ganduumar/klausapp-softwareengineer-test-task/internal/grpc/pb";
+
+package ratings;
+
+service RatingService {
+    rpc GetRatingByIdWithWeight(GetRatingsRequest) returns (GetRatingsResponse);
+    rpc GetRatingsBetweenDates(GetRatingsRequest) returns (GetRatingsResponse);
+    rpc GetRatingsBetweenDatesAggregated(GetRatingsRequest) returns (GetRatingsAggregatedResponse);
+    rpc GetOverallRatingsBetweenDates(GetRatingsRequest) returns (GetOverallRatingsResponse);
+    rpc GetOverallRatingsChangeBetweenDates(GetRatingsRequest) returns (GetOverallRatingsChangeResponse);
+    rpc GetCategoryRatingsBetweenDatesAggregated(GetRatingsRequest) returns (GetCategoryRatingsAggregatedResponse);
+}
+
+message GetRatingsRequest {
+    int32 id = 1;
+    string start_date = 2;
+    string end_date = 3;
+}
+
+message RatingResult {
+    int32 id = 1;
+    string name = 2;
+    double rating = 3;
+    string dateOrWeek = 4;
+    int32 count = 5;
+    int32 total_rating = 6;
+}
+
+message Rating {
+    int32 id = 1;
+    string name = 2;
+    int32 rating = 3;
+    string dateOrWeek = 4;
+    int32 count = 5;
+    int32 total_rating = 6;
+}
+
+message GetRatingsResponse {
+    repeated Rating rating = 1;
+}
+
+message GetOverallRatingsResponse {
+    int32 overall_rating = 1;
+}
+
+message GetOverallRatingsChangeResponse {
+    int32 percentage_change = 1;
+}
+
+message GetRatingsAggregatedResponse {
+    repeated RatingGroup rating_group = 1;
+}
+
+message CategoryRating {
+    int32 id = 1;
+    repeated RatingCategoryDetail rating_category_detail = 3;
+}
+
+message RatingCategoryDetail {
+    int32 id = 1;
+    string name = 2;
+    int32 average_rating = 3;
+}
+
+message GetCategoryRatingsAggregatedResponse {
+    repeated CategoryRating category_rating = 1;
+}
+
+message RatingGroup {
+    int32 id = 1;
+    string name = 2;
+    int32 count = 3;
+    repeated RatingDetail ratings = 4;
+}
+
+message RatingDetail {
+    string date_or_week = 1;
+    int32 rating = 2;
+}
